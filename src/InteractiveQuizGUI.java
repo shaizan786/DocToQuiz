@@ -150,8 +150,8 @@ public class InteractiveQuizGUI {
 
     private void displayQuestion() {
         QuizQuestion question = questions.get(currentQuestionIndex);
-        questionLabel.setText((currentQuestionIndex + 1) + ". " + question.getQuestion());
-        String[] optionsText = question.getOptions();
+        questionLabel.setText((currentQuestionIndex + 1) + ". " + question.question());
+        String[] optionsText = question.options();
         for (int i = 0; i < options.length; i++) {
             options[i].setText(optionsText[i]);
             options[i].setSelected(false);
@@ -167,37 +167,16 @@ public class InteractiveQuizGUI {
             }
         }
 
-        if (selectedOption == questions.get(currentQuestionIndex).getCorrectAnswerIndex()) {
+        if (selectedOption == questions.get(currentQuestionIndex).correctAnswerIndex()) {
             score++;
             JOptionPane.showMessageDialog(quizFrame, "Correct Answer!", "Result", JOptionPane.INFORMATION_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(quizFrame, "Wrong Answer! The correct answer was: "
-                    + questions.get(currentQuestionIndex).getOptions()[questions.get(currentQuestionIndex).getCorrectAnswerIndex()], "Result", JOptionPane.ERROR_MESSAGE);
+                    + questions.get(currentQuestionIndex).options()[questions.get(currentQuestionIndex).correctAnswerIndex()], "Result", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    private static class QuizQuestion {
-        private final String question;
-        private final String[] options;
-        private final int correctAnswerIndex;
-
-        public QuizQuestion(String question, String[] options, int correctAnswerIndex) {
-            this.question = question;
-            this.options = options;
-            this.correctAnswerIndex = correctAnswerIndex;
-        }
-
-        public String getQuestion() {
-            return question;
-        }
-
-        public String[] getOptions() {
-            return options;
-        }
-
-        public int getCorrectAnswerIndex() {
-            return correctAnswerIndex;
-        }
+    private record QuizQuestion(String question, String[] options, int correctAnswerIndex) {
     }
 
     public static void main(String[] args) {
